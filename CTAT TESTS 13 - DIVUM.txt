@@ -1,0 +1,271 @@
+CTAT Assessment Test 13
+
+
+1)Given L , R VALUE . Count the numbers in [L,R] such that each number satisfies two properties :
+
+CODE :-
+
+#include<stdio.h>
+unsigned long long int powerCalc(int base,int power){
+unsigned long long int result;
+int itr;
+for(itr=1,result=1;itr<=power;itr++)
+result=result*base;
+return result;
+}
+int countDigits(unsigned long long int num){
+int count;
+for(count=0;num;num/=10,count++);
+return count;
+}
+int check(unsigned long long int num,int nod){
+int oddCount,evenCount;
+if(nod%2==0)
+return 0;
+for(oddCount=0,evenCount=0;num;num/=10)
+{
+int digit=num%10;
+if(digit%2)
+oddCount++;
+else
+evenCount++;
+}
+if(oddCount%2==0&&evenCount%2==1)
+return 1;
+else
+return 0;
+}
+unsigned long long int calcValues(unsigned long long int lower,unsigned long long int upper,int nod){
+unsigned long long int num1,num2;
+unsigned long long int count=0;
+if(lower>upper)
+return 0;
+for(num1=lower;num1%10!=0;num1++)
+count=count+check(num1,nod);
+for(num2=upper;num2%10!=9;num2--)
+count=count+check(num2,nod);
+if(nod%2==1)
+count=count+(num2-num1+1)/2;
+return count;
+}
+int main(){
+unsigned long long int left,right,num,result=0,range;
+scanf("%llu %llu",&left,&right);
+int nod_l,nod_r;
+nod_l=countDigits(left);
+nod_r=countDigits(right);
+if(nod_l==nod_r){
+ printf("%llu",calcValues(left,right,nod_l));
+ return 0;
+}
+range=powerCalc(10,nod_l);
+result=result+calcValues(left,range-1,nod_l);
+for(num=nod_l+1;num<nod_r;num++)
+if(num%2==1)
+result=result+45*powerCalc(10,num-2);
+range=powerCalc(10,nod_r-1);
+result=result+calcValues(range,right,nod_r);
+printf("%llu",result);
+return 0;
+}
+
+
+
+2)You are given a string that is formed from only three characters ‘a’, ‘b’, ‘c’. You are allowed to change atmost ‘k’ characters in the given string while attempting to optimize the uniformity index.
+
+
+CODE :- 
+
+
+#include<stdio.h>
+long long int maxLen(long long int n,long long int k,char *s, char ch)
+{
+long long int count=0,l=0,r=0,maxlen=1;
+while(r<n)
+{
+
+if(s[r]!=ch)
+count++;
+while(count>k){
+if(s[l]!=ch)
+count--;
+l++;
+}
+
+if(maxlen<r-l+1)
+maxlen=r-l+1;
+r++;
+}
+return maxlen;
+}
+long long int result(long long int n, long long int k, char *s)
+{
+long long int a = maxLen(n,k,s,'a');
+long long int b = maxLen(n,k,s,'b');
+long long int c = maxLen(n,k,s,'c');
+if(a>=b && a>=c)
+return a;
+else if(b>=c)
+return b;
+else
+return c;
+
+}
+int main(){
+long long int n,k;
+scanf("%lld %lld", &n,&k);
+char str1[n];
+scanf("%s",str1);
+printf("%lld",result(n,k,str1));
+return 0;
+}
+
+
+
+
+3)Sam wants to fold the paper so its dimensions are h1*w1 in the minimum number of moves. The paper can only be folded parallel to its edges and after folding,the dimensions should be integers.
+
+
+
+CODE :- 
+
+
+#include<stdio.h>
+long long int maxLen(long long int n,long long int k,char *s, char ch)
+{
+long long int count=0,l=0,r=0,maxlen=1;
+while(r<n)
+{
+
+if(s[r]!=ch)
+count++;
+while(count>k){
+if(s[l]!=ch)
+count--;
+l++;
+}
+
+if(maxlen<r-l+1)
+maxlen=r-l+1;
+r++;
+}
+return maxlen;
+}
+long long int result(long long int n, long long int k, char *s)
+{
+long long int a = maxLen(n,k,s,'a');
+long long int b = maxLen(n,k,s,'b');
+long long int c = maxLen(n,k,s,'c');
+if(a>=b && a>=c)
+return a;
+else if(b>=c)
+return b;
+else
+return c;
+
+}
+int main(){
+long long int n,k;
+scanf("%lld %lld", &n,&k);
+char str1[n];
+scanf("%s",str1);
+printf("%lld",result(n,k,str1));
+return 0;
+}
+
+
+
+4)Given a sequence of distinct numbers a1, a2, ..... an, an inversion occurs if there are indices i<j such that ai> aj.
+
+
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<malloc.h>
+int main()
+{
+int n,*arr=NULL,ctr,ctr1,num,rem,sum=0,count=0;
+scanf("%d",&n);
+arr = (int*)malloc(sizeof(int)*n);
+for( ctr =0 ; ctr< n ;ctr++)
+scanf("%d",&arr[ctr]);
+for( ctr =0 ; ctr < n ; ctr++ )
+{
+num = arr[ctr];
+while(num)
+{
+rem = num % 6;
+sum+=rem;
+num/=6;
+}
+arr[ctr] = sum;
+//printf("%d ",arr[ctr]);
+sum=0;
+}
+for( ctr =1 ; ctr< n ; ctr++)
+for( ctr1 = ctr-1 ; ctr1 >=0 ; ctr1--)
+{
+if( arr[ctr1] > arr[ctr] )
+count++;
+}
+printf("%d",count);
+}
+
+
+
+5)The candidate with the highest no of votes wins the election,If two or more candidates have the same votes , then the tied candidates are ordered alphabetically and the last name wins
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<string.h>
+#include<malloc.h>
+#include<limits.h>
+int main()
+{
+int max , n , index , occur, ind , ctr , pos , count;
+scanf("%d" , &n);
+char name[n][30];
+char inp[30];
+int *countarr;
+countarr = (int*)calloc(n , sizeof(int));
+count = 0;
+for(ctr = 0 ; ctr < n ; ctr++)
+{
+scanf("%s" , inp);
+for(ind = 0 , occur = 1; ind < count ; ind++)
+{
+if(strcmp(name[ind] , inp) == 0)
+{
+occur++;
+pos = ind;
+}
+}
+if(occur == 1)
+{
+strcpy (name[count] , inp);
+countarr[count++] = occur;
+}
+else
+countarr[pos] += (occur-1); }
+index = 0 ;
+for(ctr = 0 , max = INT_MIN; ctr < count ; ctr++) {
+if( countarr[ctr] >= max)
+{
+max = countarr[ctr];
+pos = max;
+}
+if(countarr[ctr] == max)
+strcpy( name[index++] , name[ctr] ); }
+if(index == 0) {
+printf("%s" , name[pos]); }
+else {
+inp[0] = 0;
+for(ctr = 0 ; ctr < index ; ctr++) {
+if(strcmp(name[ctr] , inp) > 0 )
+strcpy(inp , name[ctr]); }
+printf("%s" , inp); }
+return 0; }

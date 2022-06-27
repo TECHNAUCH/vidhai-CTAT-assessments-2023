@@ -1,0 +1,174 @@
+CTAT TEST 19 - PAYTM
+
+
+1)Given a gold mine of n*m dimensions. Each field in this mine contains a positive integer which is the amount of gold in tons. Initially the miner is at first column but can be at any row. He can move only (right->,right up /,right down\) that is from a given cell, the miner can move to the cell diagonally up towards the right or right or diagonally down towards the right. Find out maximum amount of gold he can collect.
+
+CODE :-
+
+
+ #include<stdio.h>
+#include<malloc.h>
+int max(int n1 , int n2)
+{
+return n1>n2 ? n1:n2;
+}
+int main()
+{
+int **gold,r,c,m,n,right,rightUp,rightDown,maxGold;
+scanf("%d %d",&m,&n);
+gold = (int**)malloc(sizeof(int*)*m);
+for(r = 0 ; r < m ; r++ )
+{
+gold[r] = (int*)malloc(sizeof(int)*n);
+for(c = 0 ; c < n ; c++)
+{
+scanf("%d",&gold[r][c]);
+}
+}
+for(c = n-2 ; c >= 0 ; c-- )
+{
+for(r = 0 ;r < m ; r++ )
+{
+right = gold[r][c+1];
+rightUp = r-1<0?0:gold[r-1][c+1];
+rightDown=r+1==m?0:gold[r+1][c+1];
+gold[r][c]=gold[r][c]+max(right,max(rightUp,rightDown));
+}
+}
+maxGold=gold[0][0];
+for(r = 1 ; r<m;r++)
+maxGold = max(maxGold,gold[r][0]);
+printf("%d",maxGold);
+return 0;
+}
+
+
+
+
+2)compartments of different lengths as per the needs of the people in SumoLand. The metro has to cross a dark underpass of length L. Due to the scarcity of electricity , it may be only a few compartments in which the light are initially turned ON and the rest have the lights turned OFF. While the metro passes through the underpass, there should be light in atleast one of the compartment that is under the underpass at a given point of time. If not, then some of the lights have to be turned ON in the train. Due to the scarcity of electricity the number of compartments that have the light turned ON should be minimized.
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<malloc.h>
+
+int minLightOn(int numCompart, int lenUnderPass, int *lenComparts, int *numLightOn)
+{
+int lightrequiredLength = 0, Onflag = 0, ind, count=0;
+for(ind = 0; ind < numCompart; ind++)
+{
+lightrequiredLength+=lenComparts[ind];
+if(lightrequiredLength < lenUnderPass)//&& numLightOn[ind] == 0)
+continue;
+else if(lightrequiredLength > lenUnderPass && numLightOn[ind] == 0)
+{
+count++;
+lightrequiredLength -= lenUnderPass;
+}
+else
+lightrequiredLength =0;
+}
+return count;
+}
+int main()
+{
+int numCompart, lenUnderPass, *lenComparts, *numLightOn,ctr;
+scanf("%d %d",&numCompart,&lenUnderPass);
+lenComparts = (int*)malloc(sizeof(int)*numCompart);
+numLightOn = (int*)malloc(sizeof(int)*numCompart);
+for( ctr =0 ; ctr < numCompart ; ctr++)
+scanf("%d",&lenComparts[ctr]);
+for( ctr =0 ; ctr < numCompart ; ctr++)
+scanf("%d",&numLightOn[ctr]);
+printf("%d", minLightOn(numCompart, lenUnderPass, lenComparts, numLightOn));
+return 0;
+}
+
+
+
+3)...if it is prime no. need print the square root of a no. else print 0.00. eg 7 means the op is 2.65.
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+int i,m,n,c=0;
+float sr;
+//m=atoi(]);
+scanf("%d",&m);
+for(i=2;i< m/2+1;i++)
+{ if((m%i)==0)
+{
+c++;
+break;
+}
+}
+if(c==0)
+{
+sr=sqrt(m);
+printf("%.2f",sr);
+}
+else printf("0.00");
+return 0;
+}
+
+
+
+
+4). The values base and height are both positive integers passed to the program respectively. Write the output to stdout formatted as a floating point number rounded to EXACTLY 2 decimal precision WITHOUT any other additional text. Scientific format(such as 1.00E+5) should NOT be used while printing the output. You may assume that the inputs will be such that the output will not exceed the largest possible real number that can be stored in a float type variable.
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+double base, height, area;
+// printf("\n Please Enter the Base of a Triangle : ");
+scanf("%lf", &base);
+//printf("\n Please Enter the Height of a Triangle : ");
+scanf("%lf", &height);
+area = (base * height) / 2;
+printf("%.2lf", area);
+return 0;
+}
+
+
+
+5)
+
+
+CODE :- 
+
+
+#include <stdio.h>
+#include <string.h>
+// A function to check if a string str is palindrome
+void isPalindrome(char str[])
+{
+// Start from leftmost and rightmost corners of str
+int l = 0;
+int h = strlen(str) - 1;
+// Keep comparing characters while they are same
+while (h > l)
+{
+if (str[l++] != str[h--])
+{
+printf("NO");
+return;
+}
+}
+printf("YES");
+}
+// Driver program to test above function
+int main()
+{
+char str[100];
+scanf("%s",str);
+isPalindrome(str);
+return 0;
+}

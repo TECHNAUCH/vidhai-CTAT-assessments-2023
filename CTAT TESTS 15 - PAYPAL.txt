@@ -1,0 +1,302 @@
+CTAT Assessment Test 15
+
+
+1)Assume that the given string has enough memory
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+char str[200] , ch;
+int ind , count;
+scanf("%s" , str);
+int len , start;
+for(len = 0 ; str[len] ; len++);
+start = len ;
+ind = count = 0;
+while( ind < len )
+{
+ch = str[ind++];
+while(str[ind] >= '0' && str[ind] <= '9' )
+count = count * 10 + (str[ind++] - '0');
+while(count)
+{
+str[start++] = ch;
+count--;
+}
+}
+for(ind = len ; ind < start ; ind++)
+str[ind - len] =str[ind];
+str[ind - len] = 0;
+printf("%s" , str);
+
+return 0;
+}
+
+
+
+2)Check whether a given mathematical expression is valid.
+
+CODE :- 
+
+
+#include<stdio.h>
+int strChr(char *str , char ch)
+{
+int ind;
+for(ind = 0 ; str[ind] ; ind++)
+{
+if(str[ind] == ch)
+return 1;
+}
+return 0;
+}
+int main()
+{
+char str[100] , pop;
+char close[5] = ")]" , open[5]="([" ,operators[6] ="+*/-";
+scanf("%s" , str);
+char paran[100] , operand[100];
+int top_p , top_o , ind , flag ;
+top_p = top_o = -1;
+for(ind = 0 ; str[ind] ; ind++)
+{
+if(strChr(open , str[ind]) == 1)
+paran[++top_p] = str[ind];
+else if(strChr(close , str[ind]) == 1 )
+{
+if(top_p == -1)
+break;
+else
+{
+pop = paran[top_p];
+flag = 0 ;
+switch(pop)
+{
+case '(' : if(str[ind] != ')') flag = 1 ; break;
+case '[' : if(str[ind] != ']') flag = 1 ; break;
+case '{' : if(str[ind] != '}') flag = 1 ; break;
+}
+if(flag == 1) break;
+else
+paran[top_p--] = 0;
+}
+}
+else if( str[ind] >= 'a' && str[ind] <= 'z' )
+operand[++top_o] = str[ind];
+else if( strChr(operators , str[ind]) == 1)
+{
+if( top_o == -1) break;
+else
+{
+operand[top_o--] = 0;
+if( !(str[ind+1] >= 'a' && str[ind+1] <= 'z'))
+break;
+else
+{
+ind++;
+if(strChr(operators , str[ind+1]) == 1)
+operand[++top_o] = str[ind];
+}
+
+}
+}
+}
+if(str[ind] == 0 && top_o == -1 && top_p == -1)
+printf("VALID");
+else
+printf("INVALID");
+return 0 ;
+}
+
+
+
+3)There is a school in a village. It has N classes. One fine day, someone donated B blue berry cheese cakes to schools. Now you need to divide these cakes such that: Each class gets at least 1 cake. Each class will share the cake(s) among students. Your aim is to minimize the maximum number of students per cake in any class. Input The first line of the input contains two space separated integers N and B denoting the number of classes and total number of blue berry cheese cakes, respectively. Next N lines contain number of students in each class. Output For each test case, output the maximum number of students who will share a cake.
+
+CODE :- 
+
+
+#include<stdio.h>
+#define max(a,b) (a>b ? a :b)
+long long ciel(float a)
+{
+long long t=a;
+if(t!=a)
+t++;
+return t;
+}
+int main()
+{
+long long n , b , cakes_req , mid;
+long long clas[1000];
+scanf("%lld%lld" , &n , &b);
+long long l=1,r=0 , i;
+for( i=0;i<n;i++)
+{
+scanf("%lld" , &clas[i]);
+r=max(r,clas[i]);
+}
+if(b<n)//number of cakes is less than number of classes
+{
+printf("%d",-1);
+return 0;
+}
+//binary search on "maximum number of students " who will share a cake
+while(l<r)
+{
+mid=(l+r)/2;
+cakes_req=0;
+for(i=0;i<n;i++)
+{
+cakes_req+=ciel((clas[i]/(float)mid));
+}
+if(cakes_req<=b)
+{
+r=mid;
+}
+else
+{
+l=mid+1;
+}
+}
+printf("%lld" , r);
+}
+
+
+
+4)Given an array and arrange it with first maximum and first minimum and second maximum and second minimum and so on without using sorting and second array
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<malloc.h>
+void swap(int* , int,int);
+void maxHeapify(int* , int* , int);
+void minHeapify(int* , int* , int);
+int main()
+{
+int ind , parent,left,right , n ;
+//int arr[]={5,15,10,25,55,35,75,45,95,50,70,40,60,90,3};
+int *arr ;
+scanf("%d" , &n);
+arr = (int*)malloc( n * sizeof(int));
+for(ind = 0 ; ind < n ; ind++)
+scanf("%d" ,&arr[ind]);
+int safe , count = 0;
+safe = n ;
+while(n!=0)
+{
+for(parent = n / 2 - 1;parent >=0 ; parent--)
+{
+if(count % 2 == 0)
+maxHeapify(arr , &n , parent);
+else
+minHeapify(arr , &n , parent);
+}
+swap(arr , 0, --n);
+count++;
+}
+for(ind = safe-1 ; ind >= 0 ; ind--)
+printf("%d " , arr[ind]);
+return 0;
+}
+void swap(int*arr , int pos1,int pos2)
+{
+int temp;
+temp = arr[pos1];
+arr[pos1]= arr[pos2];
+arr[pos2]= temp;
+}
+void maxHeapify(int*arr , int *size , int parent)
+{
+int left,right;
+left= parent * 2+1;
+right = left + 1;
+// no child
+if(left >= *size) return;
+// 1child
+if(right >= *size) {
+if(arr[parent] < arr[left])
+{
+swap(arr , left,parent);
+maxHeapify(arr , size , left);
+}
+return ; }
+// 2 child
+if(arr[parent] < arr[left] || arr[parent] < arr[right])
+{
+if(arr[left] > arr[right])
+{
+swap(arr, left,parent);
+maxHeapify(arr , size , left);
+}
+else
+{
+swap(arr , right,parent);
+maxHeapify(arr , size , right);
+}
+} }
+void minHeapify(int*arr , int *size , int parent) {
+int left,right;
+left= parent * 2+1;
+right = left + 1;
+// no child
+if(left >= *size) return;
+// 1child
+if(right >= *size) {
+if(arr[parent] > arr[left])
+{
+swap(arr , left,parent);
+maxHeapify(arr , size , left);
+}
+return ; }
+// 2 child
+if(arr[parent] > arr[left] || arr[parent] > arr[right])
+{
+if(arr[left] < arr[right])
+{
+swap(arr, left,parent);
+minHeapify(arr , size , left);
+}
+else
+{
+swap(arr , right,parent);
+minHeapify(arr , size , right);
+}
+} }
+
+
+
+5)Form a number system with only 3 and 4. Find the nth number of the number system.
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+long long int n , start , end , count , ctr;
+scanf("%lld" , &n);
+long long int arr[n];
+start = 0 ;
+end = 1;
+count = 2;
+arr[0] = 3;
+arr[1] = 4;
+while(count <= n )
+{
+for(ctr = start ; ctr <= end && count <= n ; ctr++)
+{
+arr[count++] = arr[ctr] * 10LL + 3;
+arr[count++] = arr[ctr] * 10LL + 4;
+}
+start = end + 1;
+end = count - 1;
+}
+printf("%lld" , arr[n-1]);
+
+return 0;
+}

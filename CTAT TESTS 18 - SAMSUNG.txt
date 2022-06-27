@@ -1,0 +1,289 @@
+CTAT TEST 18 - SAMSUNG
+
+
+1)Given two numbers ‘a’ and b’. Write a program to count number of bits needed to be flipped to convert ‘a’ to ‘b’.
+
+
+CODE :-
+
+
+ #include <iostream>
+using namespace std;
+// Function that count set bits
+int countSetBits(int n)
+{
+int count = 0;
+while (n)
+{
+count += n & 1;
+n >>= 1;
+}
+return count;
+}
+// Function that return count of
+// flipped number
+int FlippedCount(int a, int b)
+{
+// Return count of set bits in
+// a XOR b
+return countSetBits(a^b);
+}
+// Driver code
+int main()
+{
+int a = 10;
+int b = 20;
+cin>>a>>b;
+cout << FlippedCount(a, b)<<endl;
+return 0;
+}
+
+
+
+
+2)Given a matrix of N rows and M columns. From m[i][j], we can move to m[i+1][j], if m[i+1][j] > m[i][j], or can move to m[i][j+1] if m[i][j+1] > m[i][j]. The task is print longest path length if we start from (0, 0).
+
+
+CODE :- 
+
+
+#include<iostream>
+#include<cstring>
+#define MAX 10
+using namespace std;
+// Return the length of LIP in 2D matrix
+int LIP(int dp[][MAX], int mat[][MAX], int n, int m, int x, int y)
+{
+// If value not calculated yet.
+if (dp[x][y] < 0)
+{
+int result = 0;
+// If reach bottom left cell, return 1.
+if (x == n-1 && y == m-1)
+return dp[x][y] = 1;
+// If reach the corner of the matrix.
+if (x == n-1 || y == m-1)
+result = 1;
+// If value greater than below cell.
+if (mat[x][y] < mat[x+1][y])
+result = 1 + LIP(dp, mat, n, m, x+1, y);
+// If value greater than left cell.
+if (mat[x][y] < mat[x][y+1])
+result = max(result, 1 + LIP(dp, mat, n, m, x, y+1));
+dp[x][y] = result;
+}
+return dp[x][y];
+}
+// Wrapper function
+int wrapper(int mat[][MAX], int n, int m)
+{
+int dp[MAX][MAX];
+memset(dp, -1, sizeof dp);
+return LIP(dp, mat, n, m, 0, 0);
+}
+// Driven Program
+int main()
+{
+int mat[][MAX] = {
+{ 1, 2, 3, 4 },
+{ 2, 2, 3, 4 },
+{ 3, 2, 3, 4 },
+{ 4, 5, 6, 7 },
+};
+int n = 4, m = 4,ctr,ctr1;
+cin>>m>>n;
+for(ctr=0;ctr<m;ctr++)
+for(ctr1=0;ctr1<n;ctr1++)
+cin>>mat[ctr][ctr1];
+cout << wrapper(mat, n, m) << endl;
+return 0;
+}
+
+
+
+
+3)A string contains patterns of the form 1(0+)1 where (0+) represents any non-empty consecutive sequence of 0’s. Count all such patterns. The patterns are allowed to overlap.
+
+CODE :- 
+
+
+#include<iostream>
+using namespace std;
+/* Function to count patterns */
+int patternCount(string str)
+{
+/* Variable to store the last character*/
+char last = str[0];
+int i = 1, counter = 0;
+while (i < str.size())
+{
+/* We found 0 and last character was '1',
+state change*/
+if (str[i] == '0' && last == '1')
+{
+while (str[i] == '0')
+i++;
+/* After the stream of 0's, we got a '1',
+counter incremented*/
+if (str[i] == '1')
+counter++;
+}
+/* Last character stored */
+last = str[i];
+i++;
+}
+return counter;
+}
+/* Driver Code */
+int main()
+{
+string str;// = "1001ab010abc01001";
+cin>>str;
+cout << patternCount(str);
+return 0;
+}
+
+
+
+
+4)Given two numbers represented by two linked lists, write a function that returns sum list. The sum list is linked list representation of addition of two input numbers. It is not allowed to modify the lists. Also, not allowed to use explicit extra space (Hint: Use
+
+
+CODE :- 
+
+#include<stdio.h>
+#include<malloc.h>
+typedef struct node
+{
+int data;
+struct node *next;
+}NODE;
+NODE * createNewNode( int gd)
+{
+NODE* newNode;
+newNode = (NODE*)malloc(sizeof(NODE));
+newNode -> data = gd;
+newNode->next= NULL;
+return newNode; }
+NODE * createList( NODE * start , int gd) {
+NODE * newNode = createNewNode(gd),*tptr,*safe;
+if(start == NULL )
+start = newNode;
+else
+{
+for(tptr=start;tptr;safe=tptr , tptr=tptr->next);
+safe->next = newNode;
+}
+return start; }
+void display(NODE * start ) {
+NODE * tptr;
+for(tptr=start;tptr;tptr=tptr->next)
+printf("%d ",tptr->data); }
+
+NODE * add(NODE * tp1,NODE*tp2,int*cary) {
+static NODE * result=NULL;
+static int carry,sum;
+if(tp1){
+add(tp1->next,tp2->next,cary);
+sum = tp1->data + tp2->data+carry;
+if(sum > 9 )
+{
+sum= sum %10;
+(*cary)=carry=1;
+}
+else (*cary)=carry =0;
+result=createList(result,sum);
+return result;
+} }
+NODE * reverseList( NODE * start) {
+NODE * tptr,*safe,*prev=NULL;
+for(tptr= start ; tptr ; )
+{
+safe = tptr->next;
+tptr->next = prev;
+prev = tptr;
+tptr= safe;
+}
+return start = prev; }
+NODE * addItself( NODE * tp ,NODE * result, int *carry,int count) {
+int sum;
+if(count>1)
+result=addItself(tp->next,result,carry,--count);
+sum = tp->data+(*carry);
+if(sum>9)
+{
+sum = sum%10;
+(*carry)=1;
+}
+else
+(*carry)=0;
+
+result=createList(result,sum);
+return result;
+}
+NODE * addTwoLists(NODE * st1,NODE * st2)
+{
+int count1=0,count2=0,carry=0,ct;
+NODE*tp1,*tp2,*result;
+for(tp1 = st1; tp1 ; tp1=tp1->next,count1++);
+for(tp2 = st2; tp2 ; tp2=tp2->next,count2++);
+if(count1==count2)
+result=add(st1,st2,&carry);
+else if(count1 < count2)
+{
+for( tp2=st2,ct=0,carry=0;ct<count2-count1;tp2=tp2->next,ct++);
+result=add(st1,tp2,&carry);
+addItself(st2,result,&carry,count2-count1);
+}
+else if(count2 < count1)
+{
+for( tp1=st1,ct=0,carry=0;ct<count1-count2;tp1=tp1->next,ct++);
+result=add(st2,tp1,&carry);
+addItself(st1,result,&carry,count1-count2);
+}
+result = reverseList(result);
+return result;
+}
+
+int main()
+{
+int num;
+NODE * start1=NULL,*start2=NULL,*result=NULL;
+do
+{
+scanf("%d",&num);
+if(num==-1) break;
+start1 = createList(start1,num);
+}while(1);
+do
+{
+scanf("%d",&num);
+if(num==-1) break;
+start2 = createList(start2,num);
+}while(1);
+result = addTwoLists(start1,start2);
+display(result);
+}
+
+
+
+
+5)There are K events with start and end time and the total allocated time is N. You have to arrange the events slots such that the events are as contiguous as possible, thus maximizing the remaining time of the day.
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<malloc.h>
+int main()
+{
+int n,k,st,ed,count=0,ctr;
+scanf("%d %d",&n,&k);
+for( ctr=0 ; ctr<k;ctr++)
+{
+scanf("%d %d",&st,&ed);
+count +=(ed-st);
+}
+printf("%d",n-count);
+return 0;
+}

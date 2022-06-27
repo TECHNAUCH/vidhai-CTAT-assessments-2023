@@ -1,0 +1,275 @@
+CTAT Assessment Test 12
+
+
+1)Write an efficient program to find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum.
+
+CODE :- 
+
+
+#include<iostream>
+#include<limits.h>
+int maxSubArraySum(int a[], int size)
+{
+int max_so_far = INT_MIN, max_ending_here = 0;
+for (int i = 0; i < size; i++)
+{
+max_ending_here = max_ending_here + a[i];
+if (max_so_far < max_ending_here)
+max_so_far = max_ending_here;
+if (max_ending_here < 0)
+max_ending_here = 0;
+}
+return max_so_far;
+}
+/*Driver program to test maxSubArraySum*/
+int main()
+{
+//= {-2, -3, 4, -1, -2, 1, 5, -3};
+int n;// = sizeof(a)/sizeof(a[0]);
+std::cin>>n;
+int a[100];//=new int[n];
+for( int ctr=0;ctr<n;ctr++)
+std::cin>>a[ctr];
+int max_sum = maxSubArraySum(a, n);
+std::cout << max_sum;
+return 0;
+}
+
+
+
+2)Given a binary array and an integer m, find the position of zeroes flipping which creates maximum number of consecutive 1’s in array.
+
+
+
+CODE ::- 
+
+#include<stdio.h>
+void findZeroes(int arr[], int n, int m)
+{
+// Left and right indexes of current window
+int wL = 0, wR = 0;
+// Left index and size of the widest window
+int bestL = 0, bestWindow = 0;
+// Count of zeroes in current window
+int zeroCount = 0;
+// While right boundary of current window doesn't cross
+// right end
+while (wR < n)
+{
+// If zero count of current window is less than m,
+// widen the window toward right
+if (zeroCount <= m)
+{
+if (arr[wR] == 0)
+zeroCount++;
+wR++;
+}
+// If zero count of current window is more than m,
+// reduce the window from left
+if (zeroCount > m)
+{
+if (arr[wL] == 0)
+zeroCount--;
+wL++;
+}
+// Updqate widest window if this window size is more
+if ((wR-wL > bestWindow) && (zeroCount<=m))
+{
+bestWindow = wR-wL;
+bestL = wL;
+}
+}
+// Print positions of zeroes in the widest window
+for (int i=0; i<bestWindow; i++)
+{
+if (arr[bestL+i] == 0)
+printf("%d ",bestL+i);
+}
+}
+#include<malloc.h>
+// Driver program
+int main()
+{
+int *arr;//= {1, 0, 0, 1, 1, 0, 1, 0, 1, 1};
+int m = 2;
+int n,ctr ;
+scanf("%d %d",&n,&m);
+arr=(int*)malloc(sizeof(int)*n);
+for(ctr =0 ; ctr<n;ctr++)
+
+scanf("%d",&arr[ctr]);
+findZeroes(arr, n, m);
+return 0;
+}
+
+
+
+3)Given an expression string exp , write a program to examine whether the pairs and the orders of “{“,”}”,”(“,”)”,”[“,”]” are correct in exp.
+
+
+CODE :- 
+
+
+#include<iostream>
+#include<cstring>
+#include<stack>
+using namespace std;
+// function to check if paranthesis are balanced
+bool areParanthesisBalanced(char* expr)
+{
+stack<char> s;
+char x;
+// Traversing the Expression
+for (int i=0; i<strlen(expr); i++)
+{
+if (expr[i]=='('||expr[i]=='['||expr[i]=='{')
+{
+// Push the element in the stack
+s.push(expr[i]);
+continue;
+}
+// IF current current character is not opening
+// bracket, then it must be closing. So stack
+// cannot be empty at this point.
+if (s.empty())
+return false;
+switch (expr[i])
+{
+case ')':
+// Store the top element in a
+x = s.top();
+s.pop();
+if (x=='{' || x=='[')
+return false;
+break;
+case '}':
+// Store the top element in b
+x = s.top();
+s.pop();
+if (x=='(' || x=='[')
+return false;
+break;
+case ']':
+// Store the top element in c
+x = s.top();
+s.pop();
+if (x =='(' || x == '{')
+return false;
+break;
+}
+}
+// Check Empty Stack
+return (s.empty());
+}
+// Driver program to test above function
+int main()
+{
+//string expr=new string[100];//= "{()}[]";
+char expr[100];
+cin>>expr;
+if (areParanthesisBalanced(expr))
+cout << "Balanced";
+else
+cout << "Not Balanced";
+
+return 0;
+}
+
+
+
+4)Given n size unsorted array,
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+int cmp( const void* p1, const void * p2)
+{
+int n1,n2;
+n1 = *((const int*)p1);
+n2 = *((const int*)p2);
+return n1 > n2 ? 1:0;
+}
+double findMedian(int a[], int n)
+{
+// First we sort the array
+qsort(a, n,sizeof(int),cmp);
+// check for even case
+if (n % 2 != 0)
+return (double)a[n/2];
+return (double)(a[(n-1)/2] + a[n/2])/2.0;
+}
+int main()
+{
+int*arr,n,ctr;
+scanf("%d",&n);
+arr = (int*)malloc(sizeof(int)*n);
+for( ctr =0 ; ctr < n ; ctr++)-
+scanf("%d",&arr[ctr]);
+printf("%g",findMedian(arr,n));
+}
+
+
+
+5)Given an array of numbers, arrange them in a way that yields the largest value. For example, if the given numbers are {54, 546, 548,60}, the arrangement 6054854654 gives the largest value. And if the given numbers are {1, 34, 3, 98, 9, 76, 45, 4}, then the arrangement 998764543431 gives the largest value.
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<malloc.h>
+#include<string.h>
+#include<stdlib.h>
+char * compare( char * x , char * y)
+{
+char * X,*Y;
+X = (char *)malloc(strlen(x)+strlen(y)+1);
+Y = (char *)malloc(strlen(x)+strlen(y)+1);
+strcpy(X,x);
+strcat(X,y);
+strcpy(Y,y);
+strcat(Y,x);
+return strcmp(X,Y) > 0 ? x:y;
+}
+void shift(char **arr , int till , int from)
+{
+int ctr;
+for( ctr = till ; ctr> from ; ctr--)
+{
+strcpy( arr[ctr],arr[ctr-1]);
+}
+}
+int main()
+{
+char **arr,str[10];//={"21","92","83","74","45","967","987","925","98","9","76","817","567"};
+int n,ctr,ctr1;
+char *cmp;
+scanf("%d",&n);
+arr =(char**) malloc(n*sizeof(char*));
+for( ctr =0 ; ctr<n;ctr++)
+arr[ctr]=(char*)malloc(10);
+for( ctr =0 ; ctr<n;ctr++)
+{
+scanf("%s",str);
+strcpy(arr[ctr],str);
+}
+cmp=(char*)malloc(10);
+for( ctr = 1 ; ctr < n ; ctr++ )
+{
+for( ctr1 = 0; ctr1< ctr ; ctr1++)
+{
+// printf("%d %d",atoi(arr[ctr]),atoi(arr[ctr1]));
+strcpy(cmp , compare(arr[ctr],arr[ctr1]));
+if( strcmp(arr[ctr],cmp)== 0 )
+{
+shift(arr,ctr,ctr1);
+strcpy( arr[ctr1],cmp);
+}
+}
+}
+for( ctr =0 ; ctr< n;ctr++)
+printf("%s",arr[ctr]);
+return 0;
+}

@@ -1,0 +1,282 @@
+CTAT TEST 17 - INFOVIEW
+
+DATE :- 20-06-2022
+
+
+1)To find the factors of the numbers given in an array and to sort the numbers in descending order according to the factors present in it
+
+CODE :- C
+
+#include<stdio.h>
+#include<math.h>
+int findFactCount( int n)
+{
+int ctr,sqr,count=2;
+sqr = (int)sqrt(n);
+if(n == 1)
+count--;
+else
+{
+for( ctr = 2 ; ctr<= sqr ; ctr++ )
+if( n % ctr == 0 )
+count +=2;
+ctr--;
+if( ctr * ctr == n )
+count--;
+}
+return count;
+}
+int main()
+{
+int arr[1000],fact[1000],ctr,size,max=-1,maxInd=-1,temp,ctr1;
+scanf("%d",&size);
+for( ctr =0 ; ctr < size ; ctr++ )
+scanf("%d",&arr[ctr]);
+for( ctr =0 ; ctr < size ; ctr++ )
+fact[ctr]=findFactCount(arr[ctr]);
+for( ctr =0 ; ctr < size ; ctr++ )
+{
+for( ctr1 =0 ; ctr1 < size ; ctr1++ )
+{
+if( fact[ctr1] != -1 && max < fact[ctr1])
+{
+max = fact[ctr1];
+maxInd = ctr1;
+}
+}
+/* temp = arr[ctr];
+arr[ctr] = arr[maxInd];
+arr[maxInd] = temp;
+temp = fact[ctr];
+fact[ctr] = fact[maxInd];
+fact[maxInd] = temp;*/
+fact[maxInd] = -1;
+printf("%d ",arr[maxInd]);
+max = -1;
+maxInd=-1;
+}
+/*for( ctr =0 ; ctr < size ; ctr++ )
+printf("%d ",arr[ctr]);
+*/
+}
+
+
+
+2)Given a Roman numeral, find its corresponding decimal value.
+
+CODE :-C
+
+ #include<stdio.h>
+//#include<conio.h>
+int getValue( char ch)
+{
+if( ch == 'I' )
+return 1;
+if( ch == 'V' )
+return 5;
+if( ch == 'X' )
+return 10;
+if( ch == 'L' )
+return 50;
+if( ch == 'C' )
+return 100;
+if( ch == 'D' )
+return 500;
+if( ch == 'M' )
+return 1000;
+
+}
+int main()
+{
+char str[100]="";
+int num=0,ctr,v1,v2,count=0;
+scanf("%s",str);
+for( ctr = 0 ; str[ctr] != '\0'; )
+{
+v1 = getValue(str[ctr]);
+if( str[ctr+1] != '\0')
+{
+v2 = getValue(str[ctr+1]);
+if( v1 < v2)
+{
+num += (v2-v1);
+ctr+=2;
+}else
+{
+num += v1;
+ctr++;
+}
+}
+else {
+num += v1; ctr++;
+}
+}
+printf("%d",num);
+}
+
+
+
+
+3)Get an unsorted array and convert into alternate array(alternate array-ascending order array by taking alternate elements).Half
+
+elements of array in ascending remaining half in descending.The first n elements should be sorted in ascending order and the next part should be sorted in descending and print it
+
+Test Case Input: [1,2,3,4,5,6,7,8],8,4
+
+Output: {1,2,3,4,8,7,6,5}
+
+Function:
+
+fn_name(input array, length of array, no of digits to sort (here 3))
+
+Fn_name(input array, 8,4)
+
+
+CODE :- C
+
+
+#include<stdio.h>
+#include<limits.h>
+void ascen_descend(int *arr, int size, int noe);
+int main()
+{
+int arr[1000], size, ind,noe;
+scanf("%d",&size);
+scanf("%d",&noe);
+for(ind=0 ; ind<size ; ind++)
+scanf("%d",&arr[ind]);
+ascen_descend(arr,size,noe);
+for(ind =0 ; ind< size; ind++)
+printf("%d ",arr[ind]);
+return 0;
+}
+void ascen_descend(int *arr,int size, int noe)
+{
+int temp,ind,min,max,ctr,minPos,maxPos,scope;
+min = INT_MAX;
+max =INT_MIN;
+for(scope = 0 ; scope < noe;scope++,min=INT_MAX,minPos=-1)
+{
+for(ctr = scope ; ctr < size; ctr++ )
+{
+if( min > arr[ctr])
+{
+min = arr[ctr];
+minPos = ctr;
+}
+}
+temp = arr[scope] ;
+arr[scope] = arr[minPos];
+arr[minPos] =temp;
+}
+for(scope = noe ; scope < size;scope++,max=INT_MIN,maxPos=-1)
+{
+for(ctr = scope ; ctr < size; ctr++ )
+{
+if( max < arr[ctr])
+{
+max = arr[ctr];
+maxPos = ctr;
+}
+}
+temp = arr[scope] ;
+arr[scope] = arr[maxPos];
+arr[maxPos] =temp;
+}
+}
+
+
+
+
+4)Write a 'C' program to print the pattern.
+
+For n=5
+
+1
+
+3*2
+
+4*5*6
+
+10*9*8*7
+
+11*12*13*14*15
+
+
+
+CODE :- C
+
+#include<stdio.h>
+int main()
+{
+int col,row,start,n;
+scanf("%d",&n);
+for(row = 1 ; row<=n ; row++,printf("\n"))
+{
+if(row % 2 == 1)
+{
+start=((row*(row-1))/2)+1;
+for(col=1 ; col<=row ; col++)
+if( col == row)
+printf("%d",start++);
+else
+printf("%d*",start++);
+}
+else
+{
+start=(row*(row+1))/2;
+for(col=1 ; col<=row ; col++)
+if( col == row)
+printf("%d",start--);
+else
+printf("%d*",start--);
+}
+// printf("\b ");
+}//outer
+return 0;
+}
+
+
+
+5)Pattern Question:- For n=5
+
+1
+
+2 2
+
+3 3 3
+
+4 4 4 4
+
+5 5 5 5 5
+
+4 4 4 4
+
+3 3 3
+
+2 2
+
+1
+
+
+
+CODE :- C
+
+
+#include<stdio.h>
+int main()
+{
+int inp,col,row;
+scanf("%d",&inp);
+for(row = 1; row <= inp ; row++,printf("\n"))
+{
+for(col = 1; col<=row ; col++)
+printf("%d ",row);
+}
+for(row = inp-1; row >= 1 ; row--,printf("\n"))
+{
+for(col = 1; col<=row ; col++)
+printf("%d ",row);
+}
+return 0;
+}

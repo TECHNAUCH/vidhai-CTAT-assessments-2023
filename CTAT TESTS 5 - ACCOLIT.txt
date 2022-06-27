@@ -1,0 +1,179 @@
+CTAT TEST 5 - Accolit
+
+
+1)Write a program to nd the Nth catalan number without using formulae.
+
+1,1,2,5,14,42,132, 429,1430... N - Catalan Series
+
+0 - 1
+
+1 - 1
+
+2 - 2
+
+3 - 5
+
+4 - 14
+
+5 - 42
+
+
+CODE :- 
+
+#include<stdio.h>
+#define SIZE 31
+unsigned long long int catalanDP(unsigned int term)
+{
+ static unsigned long long int catalan[SIZE];
+
+ int gen,use;
+ if(catalan[term]) return catalan[term];
+ catalan[0] = catalan[1] = 1;
+ for ( gen =2; gen <= term; gen++)
+ {
+ catalan[gen] = 0;
+ for (use=0; use < gen ; use++)
+ catalan[gen] += catalan[use] * catalan[gen - use -1];
+ }
+ return catalan[term];
+}
+// Driver program to test above function
+int main()
+{
+ int num;
+ scanf("%d",&num);
+ printf("%llu",catalanDP(num));
+ return 0;
+}
+
+
+2)M and N Given a sequence of M and N with M representing increasing and N representing decreasing .Output the smallest number that follows this pattern
+
+Input : MMMM
+
+Output: 1234
+
+Input: NNNN Output : 4321
+
+Input: MMNM Output: 2314
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+ char seq[10];
+ int ctr,nom=0,safe,ctr1,non=0,len=0;
+ scanf("%s",seq);
+ for( len = 0 ; seq[len] != NULL ; len++)
+ if( seq[len]=='N') non++;
+ nom = non+1;
+ non=1;
+ for( ctr = 0 ; ctr < len ; ctr++)
+ {
+if( seq[ctr] == 'M')
+seq[ctr]=48+nom++;
+else
+{
+ for( ctr1 = ctr+1; seq[ctr1] != NULL&&seq[ctr1]=='N'; ctr1++);
+ safe=--ctr1;
+ while(ctr1>= ctr)
+ seq[ctr1--] = 48+non++;
+ ctr=safe;
+}
+ }
+ printf("%s",seq);
+ return 0;
+}
+
+
+3)Given an array of size n of integer type containing the integers from 1 to n (both including, print how many times each integer is repeated. There is no rule that every integer in the range 1 to n will be present in the array. Solve the problem using only one additional variable. Example : n= 5 Array : 12341 Answer : 1 – 2 2 – 1 3 – 1 4 – 1
+
+
+CODE :-
+
+#include<stdio.h>
+int main()
+{
+ int size , arr[1000]={0},ctr,ctr1,max;
+ scanf("%d",&size);
+ for( ctr =0 ; ctr < size ; ctr++)
+ scanf("%d",&arr[ctr]);
+ max = size+1;
+ for( ctr = 0 ;ctr< size ; ctr++ )
+ {
+arr[arr[ctr]%max]+=max;
+ }
+ for( ctr = 0 ;ctr<= size ; ctr++ )
+ {
+if(arr[ctr] / max != 0 )
+ printf("%d - %d\n", ctr,arr[ctr] / max);
+
+ }
+}
+
+
+4)Given a number n, calculate the prime numbers upto n using Sieve of Eratosthenes.   Input:Input is the number to which we have to compute prime numbers. Output: All the prime numbers upto or equal to n are displayed.
+
+CODE :- 
+
+
+#include <stdio.h>
+#include<malloc.h>
+int main() {
+ int arr[10000]={0};
+
+ int num,multiplier,prod,cases,limit,tc,ctr;
+//code
+for(num=2;num<=10000;num++)
+{
+ if(arr[num]==1) continue;
+ for(multiplier = 2; num*multiplier<=10000;multiplier++)
+ {
+ prod = num * multiplier;
+ arr[prod]=1;
+ }
+}
+//scanf("%d",&cases);
+// for(tc=0 ; tc< cases;printf("\n",tc++)
+{
+ scanf("%d ",&limit);
+ for(ctr = 2 ; ctr<=limit;ctr++)
+ {
+ if(arr[ctr] == 0)
+ printf("%d ",ctr);
+ }
+}
+return 0;
+}
+
+
+5)Given a sentence . To increment the count for each character , if that character is coming in a word (from the given sentence) more than once . Eg: Given sentence : mississippi River result : the counter array i=5 p-2 r=2 s=4;
+
+CODE :- 
+
+#include<stdio.h>
+int main()
+{
+ char str[1000];
+ int alp[26]={0},ctr,flag=0;
+ scanf("%[^\n]s",str);
+ for( ctr = 0 ; str[ctr] != '\0'; ctr++ )
+ alp[str[ctr]-'a']++;
+/* for( ctr = 0 ; str[ctr] != '\0'; ctr++ )
+ if( alp[str[ctr] - 'a' ] > 1 )
+ {
+ printf("%c = %d\n",str[ctr],alp[str[ctr]-'a']);
+alp[ str[ctr] -'a'] =0;
+ } */
+ for( ctr = 0 ; ctr < 26 ; ctr++ )
+ {
+ if( alp[ctr] > 1)
+ {
+ printf("%c = %d\n",ctr+'a',alp[ctr]);
+ flag = 1;
+ }
+ }
+ if( flag == 0) printf("None";
+}

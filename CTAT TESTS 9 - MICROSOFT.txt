@@ -1,0 +1,218 @@
+CTAT Assessment Test 9
+
+
+1)string should contains only the words are not palindrome
+
+
+CODE :- 
+
+
+#include<stdio.h>
+#include<stdlib.h>
+int mystrlen(char *str)
+{
+int ind;
+for(ind = 0 ; str[ind] ; ind++);
+return ind;
+}
+int isPalindrome(char *str)
+{
+int start , end;
+for(start = 0 , end = mystrlen(str) - 1 ; start < end ; start++ , end--)
+{
+if(abs(str[start] - str[end]) == 32 )
+continue;
+if( str[start] != str[end] )
+return 0;
+}
+return 1;
+}
+int main()
+{
+char str[100];
+char *start;
+int ind;
+scanf("%[^\n]s" , str);
+start = str;
+for(ind = 0 ; str[ind] ; ind++)
+{
+if( str[ind] == 32)
+{
+str[ind] = 0;
+if( isPalindrome(start) == 0)
+printf("%s " , start);
+str[ind] = 32;
+start = str + ind + 1;
+}
+}
+if( isPalindrome(start) == 0)
+printf("%s " , start);
+return 0;
+}
+
+
+
+2)range is 0-999
+
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+char one[21][10]={"zero" , "one" , "two" , "three" , "four" , "five" , "six" , "seven" ,
+"eight" , "nine" ,"" , "eleven" , "twelve" , "thirteen" , "fourteen" , "fifteen" , "sixteen" ,
+"seventeen" , "eighteen" , "nineteen"};
+char tens[10][9]={"" , "ten","twenty","thirty","forty","fifty","sixty","seventy",
+"eighty","ninety"};
+int num;
+scanf("%d" , &num);
+if(num >=0 && num <= 99)
+{
+if( num >= 0 && num <=19) printf("%s" , one[num]);
+else
+{
+printf("%s" , tens [ num / 10 ]);
+if(num % 10 ) printf(" %s" , one[ num % 10]);
+}
+}
+else if( num / 100)
+{
+printf("%s hundred" , one[ num / 100 ] );
+
+if( num % 100 == 0) printf(" only");
+else
+{
+int rem;
+rem = num % 100;
+if( rem >= 1 && rem <=19)
+printf(" and %s" , one[rem]);
+else
+{
+printf(" and %s" , tens [ rem / 10 ]);
+if(num % 10 ) printf(" %s" , one[ rem % 10]);
+}
+}
+}
+return 0;
+}
+
+
+
+3)Given two Strings s1 and s2, remove all the characters from s1 which is present in s2.
+
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+char s1[200] , s2[200];
+int ind1 , ind2;
+scanf("%s%s" , s1 , s2);
+for(ind2 = 0 ; s2[ind2] ; ind2++)
+{
+for(ind1 = 0 ; s1[ind1] ; ind1++)
+{
+if(s1[ind1] == s2[ind2])
+s1[ind1] = '@';
+}
+}
+for(ind1 = 0 ; s1[ind1] && s1[ind1] != '@' ; ind1++);
+ind2 = ind1;
+while(1)
+{
+for(ind2; s1[ind2] && s1[ind2] == '@' ; ind2++);
+while( s1[ind2] && s1[ind2] != '@')
+{
+s1[ind1] = s1[ind2];
+ind1++;
+ind2++;
+}
+if(s1[ind2] == 0) break;
+}
+s1[ind1] = 0;
+printf("%s" , s1);
+return 0;
+}
+
+
+
+4)Given an input string and a dictionary of word,find out if the input string can be segmented into a space separated sequence of dictionary words
+
+
+
+CODE :- 
+
+
+#include<stdio.h>
+int StrLen(char *str)
+{
+int ind;
+for(ind = 0 ; str[ind] ; ind++);
+return ind;
+}
+int strCmp(char *s1 , char *s2)
+{
+int ind;
+for(ind = 0 ; s1[ind] && s2[ind] && s1[ind] == s2[ind] ; ind++);
+return s1[ind] - s2[ind];
+}
+int main()
+{
+int N , ind , ind1 , len , safeind1, prevlen;
+char safe , *start ;
+scanf("%d" , &N);
+char str[N][50];
+char input[50];
+for(ind = 0 ; ind < N ; ind++)
+scanf("%s" , str[ind]);
+scanf("%s" , input);
+start = input;
+prevlen = -1;
+for( ind =0 ; input[ind] ; ind++ , prevlen = - 1)
+{
+for(ind1 = 0 ; ind1 < N ; ind1++)
+{
+len = StrLen(str[ind1]);
+safe = input[ind+len];
+input[ind+len] = 0;
+if( strCmp(input+ind , str[ind1]) == 0 && prevlen < len)
+{
+safeind1 = ind1;
+prevlen = len;
+}
+input[ind+len] = safe;
+}
+printf("%s " , str[safeind1]);
+ind = ind + StrLen(str[safeind1]) - 1;
+}
+return 0 ;
+}
+
+
+
+5)print the pair which are mismatched in two strings
+
+
+
+CODE :- 
+
+
+#include<stdio.h>
+int main()
+{
+char str1[50];
+char str2[50];
+int ind;
+scanf("%s %s" , str1 , str2);
+for(ind = 0 ; str1[ind] ; ind++)
+{
+if(str1[ind] != str2[ind])
+printf("%c,%c ", str1[ind] , str2[ind]);
+}
+
+return 0;
+}
